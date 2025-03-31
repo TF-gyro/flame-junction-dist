@@ -75,7 +75,7 @@
     "ember-data": "~5.3.9",
     "ember-fetch": "^8.1.2",
     "ember-file-upload": "^9.3.0",
-    "ember-gyro": "^0.1.1",
+    "ember-gyro": "^0.1.2",
     "ember-keyboard": "^9.0.1",
     "ember-load-initializers": "^3.0.1",
     "ember-math-helpers": "^4.2.1",

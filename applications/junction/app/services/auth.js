@@ -51,7 +51,7 @@ export default class AuthService extends Service {
   async submitPassword() {
     this.type.loadingSearchResults = true;
     if (
-      ENV.JUNCTION_SLUG == 'junction' &&
+      // ENV.JUNCTION_SLUG == 'junction' &&
       this.inputPassword !== '' &&
       this.junctionPassword !== '' &&
       this.inputPassword == this.junctionPassword
@@ -59,35 +59,6 @@ export default class AuthService extends Service {
       this.cookies.setCookie(ENV.JUNCTION_SLUG, this.inputPassword);
       this.type.loadingSearchResults = false;
       this.justGoToRouteAfterLogin();
-    } else if (ENV.JUNCTION_SLUG !== undefined && ENV.JUNCTION_SLUG != '') {
-      await fetch('https://tribe.junction.express/custom/auth/access.php', {
-        method: 'post',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          slug: ENV.JUNCTION_SLUG,
-          password: this.inputPassword,
-        }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-        })
-        .then(async (response) => {
-          if (response !== undefined && response.authenticated === true) {
-            this.types.json.modules.webapp.name = response.title;
-            await this.types.json.save();
-            this.cookies.setCookie(ENV.JUNCTION_SLUG, this.inputPassword);
-            this.type.loadingSearchResults = false;
-            this.justGoToRouteAfterLogin();
-          } else {
-            this.type.loadingSearchResults = false;
-            alert('Incorrect password.');
-          }
-        });
     }
   }
 
@@ -129,60 +100,8 @@ export default class AuthService extends Service {
   async getJunctionPassword() {
     if (ENV.JUNCTION_SLUG == undefined || ENV.JUNCTION_SLUG == '') {
       alert('Please define JUNCTION_SLUG in .ENV file');
-    } else if (ENV.JUNCTION_SLUG == 'junction') {
+    } else {
       this.junctionPassword = ENV.JUNCTION_PASSWORD;
-    } else if (
-      this.cookies.getCookie('junctionexpress_user_id') !== undefined
-    ) {
-      let user_id = this.cookies.getCookie('junctionexpress_user_id');
-      let response = await fetch(
-        'https://tribe.junction.express/custom/auth/access.php',
-        {
-          method: 'post',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            slug: ENV.JUNCTION_SLUG,
-            user_id: user_id,
-          }),
-        },
-      ).then((res) => {
-        if (!res.ok) return;
-
-        return res.json();
-      });
-
-      if (response === undefined || response.authenticated !== true) {
-        return null;
-      }
-
-      this.cookies.setCookie(ENV.JUNCTION_SLUG, response.password);
-
-      if (
-        response.project_description !== undefined &&
-        response.project_description != ''
-      ) {
-        this.projectDescription = response.project_description;
-      }
-
-      if (
-        response.blueprint_link !== undefined &&
-        response.blueprint_link != ''
-      ) {
-        this.blueprintLink = response.blueprint_link;
-      }
-
-      if (
-        response.implementation_summary !== undefined &&
-        response.implementation_summary != ''
-      ) {
-        this.implementationSummary = response.implementation_summary;
-      }
-
-      this.type.loadingSearchResults = false;
-      this.justGoToRouteAfterLogin();
     }
   }
 }
