@@ -12,10 +12,10 @@ $danger: #bb3324 !default;
 $light: #fff8f0 !default;
 $dark: #021724 !default;
 
-$enable-caret: false !default;
-$enable-rounded: false !default;
-$enable-gradients: false !default;
-$enable-cssgrid: true !default;
+$enable-caret: true !default;
+$enable-rounded: true !default;
+$enable-gradients: true !default;
+$enable-cssgrid: false !default;
 $enable-negative-margins: true !default;
 $enable-smooth-scroll: true !default;
 

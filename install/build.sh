@@ -25,7 +25,7 @@ cd applications/junction
 # create new ember-junction instance
 ember init
 yes | ember install ember-tribe
-yes | ember install ember-junction
+yes | ember install ember-gyro
 
 # build for production
 php sync-types.php
@@ -66,51 +66,51 @@ get_latest_tag() {
 }
 
 # Main execution starts here
-echo "Starting version synchronization process..."
+# echo "Starting version synchronization process..."
 
 # Check if current directory is a git repository
-check_git_repo
+# check_git_repo
 
 # Get reference tag first (we'll need it for the commit message)
-reference_tag=$(get_latest_tag "../flame-junction-src")
+# reference_tag=$(get_latest_tag "../flame-junction-src")
 
 # Save changes in master branch and push to origin
-if check_changes; then
-    echo "Changes detected, committing..."
-    git add .
-    commit_message="latest validated build ${reference_tag}"
-    echo "Using commit message: $commit_message"
-    git commit -m "$commit_message"
+# if check_changes; then
+#     echo "Changes detected, committing..."
+#     git add .
+#     commit_message="latest validated build ${reference_tag}"
+#     echo "Using commit message: $commit_message"
+#     git commit -m "$commit_message"
 
-    echo "Pushing changes to origin/master..."
-    git push origin master
-else
-    echo "No changes to commit in current repository"
-fi
+#     echo "Pushing changes to origin/master..."
+#     git push origin master
+# else
+#     echo "No changes to commit in current repository"
+# fi
 
 # Get tags from both repositories
-current_tag=$(get_latest_tag ".")
+# current_tag=$(get_latest_tag ".")
 
-echo "Current repository tag: $current_tag"
-echo "Reference repository tag: $reference_tag"
+# echo "Current repository tag: $current_tag"
+# echo "Reference repository tag: $reference_tag"
 
-# Compare and update tags if necessary
-if [ "$current_tag" != "$reference_tag" ]; then
-    echo "Tags are different. Updating current repository tag to match reference..."
+# # Compare and update tags if necessary
+# if [ "$current_tag" != "$reference_tag" ]; then
+#     echo "Tags are different. Updating current repository tag to match reference..."
 
-    # Delete the current tag locally and remotely if it exists
-    if [ -n "$current_tag" ]; then
-        git tag -d "$current_tag" 2>/dev/null
-        git push origin ":refs/tags/$current_tag" 2>/dev/null
-    fi
+#     # Delete the current tag locally and remotely if it exists
+#     if [ -n "$current_tag" ]; then
+#         git tag -d "$current_tag" 2>/dev/null
+#         git push origin ":refs/tags/$current_tag" 2>/dev/null
+#     fi
 
-    # Create new tag and push it
-    git tag "$reference_tag"
-    git push origin "$reference_tag"
+#     # Create new tag and push it
+#     git tag "$reference_tag"
+#     git push origin "$reference_tag"
 
-    echo "Tag $reference_tag has been created and pushed to origin"
-else
-    echo "Tags are already synchronized"
-fi
+#     echo "Tag $reference_tag has been created and pushed to origin"
+# else
+#     echo "Tags are already synchronized"
+# fi
 
-echo "Version synchronization completed successfully"
+# echo "Version synchronization completed successfully"
